@@ -51,6 +51,7 @@ const addListeners = (
         break;
       case "Digit4":
         listElements[3].click();
+        break;
       case "KeyR":
         btnStartOverElement.click();
           break;
@@ -323,10 +324,8 @@ const colorShift = (elements, fps, changeEverySeconds) => {
         color = randomColor();
         colorShiftIncrementor = 0;
         calculateChangeColorValues = true;
-        console.log("CHANGED COLOR", color);
     } else {
         oldColor = firstElement.style.borderColor;
-        console.log("OLD COLOR", oldColor);
         m = oldColor.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
         if(m) {
             let r, g, b;
@@ -345,20 +344,16 @@ const colorShift = (elements, fps, changeEverySeconds) => {
                 g: g,
                 b: b
             }
-            console.log("NEW COLOR", newColor);
-            console.log("CHANGE COLOR VALUES", changeColorValues);
             for(element of elements) {
                 element.style.borderColor = `rgb(${newColor.r}, ${newColor.g}, ${newColor.b})`;
             }
             colorShiftIncrementor++;
         } else {
-            console.log("RAN THIS");
             firstElement.style.borderColor = "#8c87d5";
             for(let i = 1; i < elements.length - 1; i++) {
                 elements[i].style.borderColor = "#eee";
             }
             color = randomColor();
-            console.log("RANDOM COLOR", color);
             calculateChangeColorValues = true;
             colorShiftIncrementor++;
             return;
