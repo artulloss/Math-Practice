@@ -35,6 +35,8 @@ const addListeners = (
     });
   }
 
+  const btnStartOverElement = document.getElementById("btnStartOver");
+
   // Keyboard input
   document.addEventListener("keyup", (event) => {
     switch (event.code) {
@@ -49,10 +51,16 @@ const addListeners = (
         break;
       case "Digit4":
         listElements[3].click();
+      case "KeyR":
+        btnStartOverElement.click();
+          break;
+      case "KeyE":
+        const clickEvent = document.createEvent('MouseEvents');
+        clickEvent.initEvent('dblclick', true, true);
+        btnStartOverElement.dispatchEvent(clickEvent);
     }
   });
 
-  const btnStartOverElement = document.getElementById("btnStartOver");
   btnStartOverElement.addEventListener("click", () => {
     if (!started) {
       startQuiz(listElements, expressionElement, currentProblemElement);
@@ -85,25 +93,24 @@ const addListeners = (
   // Dark theme
 
   const darkModeToggle = document.getElementById("toggleDarkMode");
-  console.log(darkModeToggle);
   darkModeToggle.addEventListener("click", (event) => {
       event.preventDefault();
-      for(child of document.children) {
-          if(child.classList.contains("theme-dark")) {
-            child.classList.remove("theme-dark");  
+      toggleColorShifting(); // RGB in dark theme !!!
+      const html = document.querySelector("html");
+      const elements = [html, btnStartOverElement];
+      for(element of elements) {
+          if(element.classList.contains("theme-dark")) {
+            element.classList.remove("theme-dark");  
             continue;
           }
-          child.classList.add("theme-dark");
+          element.classList.add("theme-dark");
       }
-      const html = document.querySelector("html");
       if(darkModeToggle.innerText === "☀️") {
-        html.style.backgroundColor = "#fff";
         darkModeToggle.innerText = "🌙";
       } else {
-        html.style.backgroundColor = "#111";
         darkModeToggle.innerText = "☀️";
       }
-  })
+  });
 
 };
 
@@ -276,3 +283,94 @@ const areCheckboxesChecked = (checkBoxes) => {
   }
   return false;
 };
+
+// Linear color shifting
+
+let shifting = false;
+let intervalId;
+
+const toggleColorShifting = () => {
+    let elements = [document.querySelector("button")];
+    elements = elements.concat(Array.from(document.querySelectorAll(".show-hide ul li")))
+    elements.push(document.querySelector(".expression"));
+    if(shifting === false) {
+        const fps = 30;
+        const changeEverySeconds = 1;
+        intervalId = setInterval(() => colorShift(elements, fps, changeEverySeconds), 1000 / fps);
+        shifting = true;
+    } else {
+        clearInterval(intervalId);
+        shifting = false;
+        for(element of elements) {
+            element.style.borderColor = "";
+        }
+    }
+}
+
+let colorShiftIncrementor = 0;
+let color;
+let calculateChangeColorValues = false;
+let changeColorValues = {
+    r: 0,
+    g: 0,
+    b: 0
+}
+
+const colorShift = (elements, fps, changeEverySeconds) => {    
+    const firstElement = elements[0];
+    let newColor;
+    if(colorShiftIncrementor * changeEverySeconds >= fps) {
+        color = randomColor();
+        colorShiftIncrementor = 0;
+        calculateChangeColorValues = true;
+        console.log("CHANGED COLOR", color);
+    } else {
+        oldColor = firstElement.style.borderColor;
+        console.log("OLD COLOR", oldColor);
+        m = oldColor.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+        if(m) {
+            let r, g, b;
+            [_, r, g, b] = m;
+            if(calculateChangeColorValues) {
+                changeColorValues.r = (color.r - r) / fps;
+                changeColorValues.g = (color.g - g) / fps;
+                changeColorValues.b = (color.b - b) / fps;
+                calculateChangeColorValues = false;
+            }
+            r = Number(r) + changeColorValues.r;
+            g = Number(g) + changeColorValues.g;
+            b = Number(b) + changeColorValues.b;
+            newColor = {
+                r: r,
+                g: g,
+                b: b
+            }
+            console.log("NEW COLOR", newColor);
+            console.log("CHANGE COLOR VALUES", changeColorValues);
+            for(element of elements) {
+                element.style.borderColor = `rgb(${newColor.r}, ${newColor.g}, ${newColor.b})`;
+            }
+            colorShiftIncrementor++;
+        } else {
+            console.log("RAN THIS");
+            firstElement.style.borderColor = "#8c87d5";
+            for(let i = 1; i < elements.length - 1; i++) {
+                elements[i].style.borderColor = "#eee";
+            }
+            color = randomColor();
+            console.log("RANDOM COLOR", color);
+            calculateChangeColorValues = true;
+            colorShiftIncrementor++;
+            return;
+        }
+    }
+}
+
+/** Returns random rgb */
+const randomColor = () => {
+    return {
+        r: randomNumber(255),
+        g: randomNumber(255),
+        b: randomNumber(255)
+    }
+}

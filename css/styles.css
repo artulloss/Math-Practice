@@ -76,10 +76,14 @@ button {
   display: block;
   margin: 40px auto;
   padding: 8px 12px;
-  background-color: #abd587;
+  background-color: #8c87d5;
   border: 0px;
   border-radius: 4px;
   font-size: 20px;
+}
+
+button.theme-dark {
+  border: 1px solid #8c87d5;
 }
 
 a {
@@ -92,4 +96,5 @@ a {
 
 .theme-dark {
   color: #eee !important;
+  background-color: #111;
 }
