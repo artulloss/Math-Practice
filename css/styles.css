@@ -1,0 +1,95 @@
+html,
+body {
+  height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+header,
+main,
+footer {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+main {
+  min-height: 100%;
+  margin-bottom: -50px;
+}
+
+footer,
+.push {
+  height: 50px;
+}
+
+h1 {
+  font-family: "Permanent Marker", cursive;
+  font-size: 5rem;
+}
+#problem .expression {
+  font-family: "Permanent Marker", cursive;
+  font-size: 48px;
+  border-radius: 0.5em;
+  border: 1px solid #eeeeee;
+  padding: 10px;
+  margin: 0 40px;
+}
+#answers ul {
+  margin: 0;
+  padding: 0;
+  margin: 40px auto;
+  display: flex;
+  list-style-type: none;
+  justify-content: space-around;
+}
+#answers li {
+  margin: 0 20px;
+  padding: 20px 30px;
+  cursor: pointer;
+  border-radius: 0.5em;
+  border: 1px solid #eeeeee;
+}
+#operators {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content: space-around;
+  width: 80%;
+}
+#operators div input {
+  height: 25px;
+  width: 25px;
+}
+#operators div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#operators div label {
+  margin-left: 20px;
+}
+footer {
+  margin-top: 50px;
+  font-size: 12px;
+}
+button {
+  font-family: "Permanent Marker", cursive;
+  display: block;
+  margin: 40px auto;
+  padding: 8px 12px;
+  background-color: #abd587;
+  border: 0px;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.theme-dark {
+  color: #eee !important;
+}
