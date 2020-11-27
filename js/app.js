@@ -16,6 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
     currentScoreElement,
     currentProblemElement
   );
+  // Theme
+  const localStorage = window.localStorage;
+  if(localStorage.getItem('theme') === 'dark') {
+    document.getElementById("toggleDarkMode").click();
+  }
   document.querySelector(".year").innerText = new Date().getFullYear();
 });
 
@@ -94,6 +99,7 @@ const addListeners = (
   // Dark theme
 
   const darkModeToggle = document.getElementById("toggleDarkMode");
+  const localStorage = window.localStorage;
   darkModeToggle.addEventListener("click", (event) => {
       event.preventDefault();
       toggleColorShifting(); // RGB in dark theme !!!
@@ -107,9 +113,11 @@ const addListeners = (
           element.classList.add("theme-dark");
       }
       if(darkModeToggle.innerText === "☀️") {
+        localStorage.setItem('theme', 'light');
         darkModeToggle.innerText = "🌙";
       } else {
         darkModeToggle.innerText = "☀️";
+        localStorage.setItem('theme', 'dark');
       }
   });
 
